@@ -25,6 +25,15 @@
     h1{ margin:0 0 10px; font-size:26px; }
     p { margin:0 0 18px; color:#444; }
 
+    img.hero{
+      width:100%;
+      max-width:360px;
+      border-radius:16px;
+      margin:12px auto 18px;
+      display:block;
+      object-fit:cover;
+    }
+
     .arena{
       position:relative;
       height:240px;
@@ -45,18 +54,19 @@
       user-select:none;
       box-shadow:0 8px 18px rgba(0,0,0,.10);
     }
+
     #yes{
       background:#22c55e;
       color:white;
       left:32%;
-      top:48%;
+      top:55%;
       transform:translate(-50%,-50%);
     }
     #no{
       background:#ef4444;
       color:white;
       left:68%;
-      top:48%;
+      top:55%;
       transform:translate(-50%,-50%);
     }
 
@@ -68,41 +78,72 @@
 
     .hidden{ display:none; }
     .big{
-      font-size:30px;
+      font-size:28px;
       margin:0 0 8px;
+      font-weight:800;
     }
-    .heart{
-      font-size:44px;
-      margin:10px 0 0;
+
+    /* Static button (for page 2) */
+    .staticBtn{
+      position:static;
+      display:inline-block;
+      margin-top:18px;
+      background:#6366f1;
+      color:white;
+      padding:12px 18px;
+      border-radius:999px;
+      border:0;
+      font-weight:800;
+      font-size:16px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.10);
     }
   </style>
 </head>
 
 <body>
+  <!-- PAGE 1 -->
   <div class="card" id="page1">
     <h1>Will you be my Valentine? 💌</h1>
-    <p>Choose carefully 😇</p>
+    <p>Please choose wisely.</p>
+
+    <!-- Front image -->
+    <img class="hero" src="front.jpg" alt="Front photo">
 
     <div class="arena" id="arena">
       <button class="btn" id="yes">Yes 💘</button>
       <button class="btn" id="no">No 🙃</button>
     </div>
 
-    <div class="small">(Tip: “No” is… uncooperative.)</div>
+    <div class="small">(Tip: “No” is… not very cooperative.)</div>
   </div>
 
+  <!-- PAGE 2 -->
   <div class="card hidden" id="page2">
-    <div class="big">I knew you’d say yes 💖</div>
-    <p>Happy Valentine’s Day 🌹</p>
-    <div class="heart">🥰</div>
+    <div class="big">Okay.</div>
+    <p>You are added to the shortlist.</p>
+
+    <button class="staticBtn" id="nextBtn">Click to see if you won</button>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="card hidden" id="page3">
+    <div class="big">Congratulations.</div>
+    <p>You are the chosen one 🐧💖</p>
+
+    <img class="hero" src="penguins.png" alt="Penguins">
   </div>
 
   <script>
     const arena = document.getElementById("arena");
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
+
     const page1 = document.getElementById("page1");
     const page2 = document.getElementById("page2");
+    const page3 = document.getElementById("page3");
+
+    const nextBtn = document.getElementById("nextBtn");
 
     function moveNo() {
       const arenaRect = arena.getBoundingClientRect();
@@ -115,18 +156,27 @@
       const x = pad + Math.random() * Math.max(pad, maxX);
       const y = pad + Math.random() * Math.max(pad, maxY);
 
+      // Use absolute positioning inside the arena
       noBtn.style.transform = "none";
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
     }
 
+    // Make "No" dodge mouse + finger
     noBtn.addEventListener("mouseenter", moveNo);
     noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNo(); });
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); }, { passive:false });
 
+    // Page 1 -> Page 2
     yesBtn.addEventListener("click", () => {
       page1.classList.add("hidden");
       page2.classList.remove("hidden");
+    });
+
+    // Page 2 -> Page 3
+    nextBtn.addEventListener("click", () => {
+      page2.classList.add("hidden");
+      page3.classList.remove("hidden");
     });
   </script>
 </body>
