@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine?</title>
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: Arial, Helvetica, sans-serif;
+      background:#fff7fb;
+      color:#111;
+    }
+    .card{
+      width:min(560px, 92vw);
+      background:white;
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 12px 35px rgba(0,0,0,.10);
+      text-align:center;
+    }
+    h1{ margin:0 0 10px; font-size:26px; }
+    p { margin:0 0 18px; color:#444; }
+
+    .arena{
+      position:relative;
+      height:240px;
+      border-radius:16px;
+      background:linear-gradient(180deg, #fff, #fff1f7);
+      border:1px solid #ffd1e1;
+      overflow:hidden;
+    }
+
+    .btn{
+      position:absolute;
+      border:0;
+      border-radius:999px;
+      padding:12px 18px;
+      font-weight:700;
+      font-size:16px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 8px 18px rgba(0,0,0,.10);
+    }
+    #yes{
+      background:#22c55e;
+      color:white;
+      left:32%;
+      top:48%;
+      transform:translate(-50%,-50%);
+    }
+    #no{
+      background:#ef4444;
+      color:white;
+      left:68%;
+      top:48%;
+      transform:translate(-50%,-50%);
+    }
+
+    .small{
+      margin-top:14px;
+      font-size:12px;
+      color:#666;
+    }
+
+    .hidden{ display:none; }
+    .big{
+      font-size:30px;
+      margin:0 0 8px;
+    }
+    .heart{
+      font-size:44px;
+      margin:10px 0 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" id="page1">
+    <h1>Will you be my Valentine? 💌</h1>
+    <p>Choose carefully 😇</p>
+
+    <div class="arena" id="arena">
+      <button class="btn" id="yes">Yes 💘</button>
+      <button class="btn" id="no">No 🙃</button>
+    </div>
+
+    <div class="small">(Tip: “No” is… uncooperative.)</div>
+  </div>
+
+  <div class="card hidden" id="page2">
+    <div class="big">I knew you’d say yes 💖</div>
+    <p>Happy Valentine’s Day 🌹</p>
+    <div class="heart">🥰</div>
+  </div>
+
+  <script>
+    const arena = document.getElementById("arena");
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
+
+    function moveNo() {
+      const arenaRect = arena.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const pad = 10;
+      const maxX = arenaRect.width - btnRect.width - pad;
+      const maxY = arenaRect.height - btnRect.height - pad;
+
+      const x = pad + Math.random() * Math.max(pad, maxX);
+      const y = pad + Math.random() * Math.max(pad, maxY);
+
+      noBtn.style.transform = "none";
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNo);
+    noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNo(); });
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); }, { passive:false });
+
+    yesBtn.addEventListener("click", () => {
+      page1.classList.add("hidden");
+      page2.classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>
